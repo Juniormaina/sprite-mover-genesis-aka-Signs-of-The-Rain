@@ -1,0 +1,258 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    background: #2a1c0e;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+}
+
+#app {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#game-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#game-container canvas {
+    display: block;
+    margin: auto;
+}
+
+/* ---- HUD overlay ---- */
+#hud {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hud-top {
+    pointer-events: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+}
+
+.hud-title {
+    color: #fff3dc;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.hud-telemetry {
+    display: flex;
+    gap: 14px;
+    color: #ffe9c2;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    background: rgba(40, 24, 8, 0.6);
+    border: 1px solid rgba(217, 160, 91, 0.5);
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+
+.hud-buttons {
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+}
+
+.hud-btn {
+    pointer-events: auto;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    min-height: 44px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2a1608;
+    background: #e0a85a;
+    transition: transform 0.08s ease, background 0.15s ease;
+}
+
+.hud-btn:hover {
+    background: #f0bd72;
+}
+
+.hud-btn:active {
+    transform: scale(0.96);
+}
+
+.hud-btn-big {
+    font-size: 16px;
+    padding: 12px 22px;
+}
+
+.controls-legend {
+    pointer-events: none;
+    align-self: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    color: rgba(255, 240, 215, 0.9);
+    font-size: 12px;
+    padding: 8px 14px;
+    margin-bottom: 12px;
+    background: rgba(40, 24, 8, 0.45);
+    border-radius: 10px;
+}
+
+/* ---- Touch controls (8-way D-pad) ---- */
+.touch-controls {
+    pointer-events: none;
+    display: none;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 20px 24px 28px;
+}
+
+.dpad {
+    pointer-events: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 58px);
+    grid-template-rows: repeat(3, 58px);
+    gap: 6px;
+}
+
+.dpad-btn {
+    width: 58px;
+    height: 58px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 240, 215, 0.4);
+    background: rgba(224, 168, 90, 0.82);
+    color: #2a1608;
+    font-size: 22px;
+    font-weight: 700;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dpad-btn:active {
+    background: #fff3dc;
+}
+
+.dpad-center {
+    background: rgba(40, 24, 8, 0.35);
+    color: rgba(255, 240, 215, 0.6);
+    font-size: 16px;
+}
+
+.touch-actions {
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.touch-btn {
+    pointer-events: auto;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 240, 215, 0.4);
+    background: rgba(224, 168, 90, 0.9);
+    color: #2a1608;
+    font-size: 16px;
+    font-weight: 700;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.touch-btn:active {
+    background: #fff3dc;
+}
+
+@media (pointer: coarse) {
+    .touch-controls {
+        display: flex;
+    }
+    .controls-legend {
+        display: none;
+    }
+}
+
+/* ---- Pause overlay ---- */
+.pause-overlay {
+    pointer-events: auto;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(20, 12, 4, 0.62);
+    backdrop-filter: blur(2px);
+    z-index: 50;
+}
+
+.pause-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+    background: #3a2410;
+    border: 1px solid rgba(217, 160, 91, 0.5);
+    padding: 32px 40px;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+}
+
+.pause-title {
+    color: #fff3dc;
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.pause-sub {
+    color: rgba(255, 233, 194, 0.7);
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+/* ---- Boot overlay ---- */
+.boot-overlay {
+    pointer-events: auto;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(20, 12, 4, 0.85);
+    z-index: 60;
+}
+
+.boot-text {
+    color: #ffe9c2;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
