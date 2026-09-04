@@ -373,17 +373,19 @@ export class Game extends Phaser.Scene {
 
     create() {
         if (!this.anims.exists('warrior_idle')) {
-            this.anims.create({
-                key: 'warrior_idle',
-                frames: this.anims.generateFrameNumbers('player_warrior', { start: 0, end: 7 }),
+            const idleFrames = this.textures.exists('player_warrior')
+      ? this.anims.generateFrameNumbers('player_warrior', { start: 0, end: Math.max(0, Math.min(7, this.textures.get('player_warrior').frameTotal - 1)) })
+      : [];
+    this.anims.create({ key: 'warrior_idle', frames: idleFrames.length > 0 ? idleFrames : [{ key: 'player_warrior', textureKey: 'player_warrior' }] as any,
                 frameRate: 8,
                 repeat: -1,
             });
         }
         if (!this.anims.exists('warrior_run')) {
-            this.anims.create({
-                key: 'warrior_run',
-                frames: this.anims.generateFrameNumbers('player_run', { start: 0, end: 5 }),
+            const runFrames = this.textures.exists('player_run')
+      ? this.anims.generateFrameNumbers('player_run', { start: 0, end: Math.max(0, Math.min(5, this.textures.get('player_run').frameTotal - 1)) })
+      : [];
+    this.anims.create({ key: 'warrior_run', frames: runFrames.length > 0 ? runFrames : [{ key: 'player_run', textureKey: 'player_run' }] as any,
                 frameRate: 10,
                 repeat: -1,
             });
@@ -393,14 +395,12 @@ export class Game extends Phaser.Scene {
         this.buildWaterhole();
 
         // grass tufts scattered
-        const decor = this.add.graphics().setDepth(-12);
         for (let i = 0; i < 220; i++) {
             const x = Phaser.Math.Between(0, WORLD_W);
             const y = Phaser.Math.Between(0, WORLD_H);
             const d = this.add.image(x, y, 'tuft').setDepth(y).setScale(Phaser.Math.FloatBetween(0.6, 1.2));
             d.setTint(i % 3 ? 0xffffff : 0xc8a86a);
         }
-        void decor;
 
         // static collider group
         this.solids = this.physics.add.staticGroup();
